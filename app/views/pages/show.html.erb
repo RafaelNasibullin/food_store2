@@ -1,0 +1,41 @@
+<div class="container">
+	<div class="row">
+		<div class="col-md-7">
+			<p><%= image_tag @place.image %></p>
+			<h3>Название: <%= @place.name %></h3>
+			<h4>Описание: <%= @place.desc %></h4>	
+			<p><%= link_to 'Назад', root_path  %></p>	
+
+		</div>
+		<% if signed_in? %>
+		<div class="col-md-3 basket">
+			<h4>Корзина <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span></h4>
+			<% current_user.carts.where(place: @place).first_or_create.cart_items.each do |item| %> 
+			<div class="element">
+				<p><%= item.dish.name %> | Цена: <%= item.price %> | <%= link_to 'X', destroy_path(item), method: :delete %></p> 
+				<p>количество: <%= item.amount %></p>					
+			</div>
+			<% end %>
+			<p>Сумма: <%= current_user.carts.where(place: @place).first.summ %> | </p>
+		</div>
+	<% end %>
+	</div>
+
+	<div class="row">
+		<% @place.dishes.each do |dish| %>
+		<div class="col-sm-6 col-md-3">
+			<div class="thumbnail">
+				<div class="caption">
+					<h3><%= dish.name %></h3>
+					<p>Описание: <%= dish.desc%></p>
+					<p>Цена: <%= dish.price %></p>
+					<% if signed_in? %>
+					<p><%= link_to 'Добавить в корзину', dish_cart_items_path(dish), class: 'btn btn-primary', method: :post if can? :create, :all %></p>
+					<% end %>
+				</div>
+			</div>
+		</div>
+		<% end %>
+	</div>
+</div>
+

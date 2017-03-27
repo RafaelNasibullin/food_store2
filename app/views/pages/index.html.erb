@@ -1,0 +1,12 @@
+<div class="container">
+	<div class="row row_dish">
+		<% @places.each do |place| %>
+		<div class="col-md-2">
+			<p><%= image_tag place.image %></p>	
+			<h3><%= place.name %></h3>	
+			<h4><%= link_to place.desc, show_path(place)  %></h4>	
+		</div>
+		<% end %>
+	</div>
+</div>
+
